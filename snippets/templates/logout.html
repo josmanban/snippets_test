@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row justify-content-md-center" style="padding-top:20px;">
+        <div class="col-md-8">
+            {% if request.user.is_authenticated %}
+            <h1>¿Estas seguro de cerrar la sesi&oacute;n?</h1>
+            <form method="POST"> {% csrf_token %}
+                <button type="submit" class="btn btn-lg btn-primary float-right">Cerrar Sesi&oacute;n</button>
+            </form>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

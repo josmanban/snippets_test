@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="row justify-content-md-center my-3">
+        <div class="col-md-6">
+            <h1 class="text-center pb-3">Delete snippet</h1>
+            <form method="POST" class="post-form">
+                {% csrf_token %}
+                <p>Are you sure you want to delete snippet "{{ object.id }}"?</p>
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
