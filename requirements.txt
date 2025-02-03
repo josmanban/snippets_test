@@ -84,6 +84,10 @@ prompt-toolkit==3.0.48
     # via
     #   -r requirements.in
     #   click-repl
+psycopg[c]==3.2.4 ; sys_platform == "linux"
+    # via -r requirements.in
+psycopg-c==3.2.4
+    # via psycopg
 psycopg2==2.9.9
     # via
     #   -r requirements.in
@@ -122,6 +126,7 @@ typing-extensions==4.12.2
     #   -r requirements.in
     #   beautifulsoup4
     #   dj-database-url
+    #   psycopg
 tzdata==2024.2
     # via
     #   -r requirements.in
