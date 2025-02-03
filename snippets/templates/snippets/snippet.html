@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load pygmentify_tags %}
+
 {% block content %}
     <div class="row justify-content-md-center">
         <div class="col-md-8">
@@ -12,17 +14,17 @@
                     <a href="{% url 'language' language=snippet.language.slug %}"><h5 class="card-title">{{ snippet.language.name }}</h5></a>
                     <h6 class="card-subtitle mb-2 text-muted">Creado: {{ snippet.created }}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">Actualizado: {{ snippet.updated }}</h6>
-                    <p class="card-text">{{ snippet.description }}</p>
-                    <div>
-                        <!-- Código del Snippet -->
-                        <samp>{{ snippet.snippet|safe }}</samp>
-                        <!-- Código del Snippet -->
-                    </div>
+                    <p class="card-text">{{ snippet.description }}</p>                    
+                    {% pygmentify %}
+                    <pre class={{snippet.language.slug}}>
+                        {{ snippet.snippet|safe }}
+                    </pre>
+                    {% endpygmentify %}
                     {% if request.user.username == snippet.user.username %}
                         <hr>
                         <br>
-                        <a href="{% url 'snippet_edit' id=snippet.id %}" class="btn btn-info">Editar</a>
-                        <a href="{% url 'snippet_delete' id=snippet.id %}" class="btn btn-danger">Eliminar</a>
+                        <a href="{% url 'snippet_edit' pk=snippet.id %}" class="btn btn-info">Editar</a>
+                        <a href="{% url 'snippet_delete' pk=snippet.id %}" class="btn btn-danger">Eliminar</a>
                     {% endif %}
                 </div>
             </div>
