@@ -14,6 +14,7 @@ import os
 
 import django_heroku
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,7 @@ SECRET_KEY = config("SECRET_KEY", default="Secret Key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = ["django-snippets-crud.herokuapp.com/"]
+ALLOWED_HOSTS = ["[*]"]
 
 # Application definition
 
@@ -78,12 +79,27 @@ WSGI_APPLICATION = "django_snippets.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+if IS_HEROKU_APP:
+    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+    # automatically by Heroku when a database addon is attached to your Heroku app. See:
+    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres#application-config-vars
+    # https://github.com/jazzband/dj-database-url
+    DATABASES = {
+        "default": dj_database_url.config(
+            env="DATABASE_URL",
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
